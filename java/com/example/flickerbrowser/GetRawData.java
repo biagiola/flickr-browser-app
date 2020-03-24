@@ -25,7 +25,7 @@ class GetRawData  extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        super.onPostExecute(s);
+        Log.d(TAG, "onPostExecute: parameter is: " + s);
     }
 
     @Override
@@ -74,7 +74,7 @@ class GetRawData  extends AsyncTask<String, Void, String> {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    Log.e(TAG, "doInBackground: Error closing strem " + e.getMessage() );
+                    Log.e(TAG, "doInBackground: Error closing stream " + e.getMessage() );
                 }
             }
         }
