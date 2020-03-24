@@ -50,14 +50,37 @@ class GetRawData  extends AsyncTask<String, Void, String> {
 
             StringBuilder result = new StringBuilder();
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            
+
+//            String line;
+//            while(null != (line = reader.readLine())) {
+            for(String line = reader.readLine(); line != null; line = reader.readLine()) {
+                result.append(line).append("\n");
+            }
+
+            mDownloadStatus = mDownloadStatus.OK;
+            return result.toString();
+
         } catch (MalformedURLException e) {
             Log.e(TAG, "doInBackground: " + e.getMessage());
         } catch (IOException e) {
             Log.e(TAG, "doInBackground: IO Exception reading data: " + e.getMessage());
         } catch (SecurityException e) {
             Log.e(TAG, "doInBackground: Security Exception. Needs permission?" + e.getMessage());
+        } finally {
+            if(connection != null) {
+                connection.disconnect();
+            }
+            if(reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Log.e(TAG, "doInBackground: Error closing strem " + e.getMessage() );
+                }
+            }
         }
+
+        mDownloadStatus = mDownloadStatus.FAILED_OR_EMPTY;
+
         return null;
     }
 }
