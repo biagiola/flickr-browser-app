@@ -1,6 +1,7 @@
 package com.example.flickerbrowser;
 
 class Photo {
+
     private String mTitle;
     private String mAuthor;
     private String mAuthorId;
@@ -17,27 +18,27 @@ class Photo {
         mImage = image;
     }
 
-    public String getTitle() {
+    String getTitle() {
         return mTitle;
     }
 
-    public String getAuthor() {
+    String getAuthor() {
         return mAuthor;
     }
 
-    public String getAuthorId() {
+    String getAuthorId() {
         return mAuthorId;
     }
 
-    public String getLink() {
+    String getLink() {
         return mLink;
     }
 
-    public String getTags() {
+    String getTags() {
         return mTags;
     }
 
-    public String getImage() {
+    String getImage() {
         return mImage;
     }
 
