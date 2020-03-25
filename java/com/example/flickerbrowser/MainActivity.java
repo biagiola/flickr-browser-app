@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements GetRawData.OnDown
         if(status == DownloadStatus.OK) {
             Log.d(TAG, "onDownloadComplete: data is " + data);
         } else {
-            // download or proccessing failed
+            // download or processing failed
             Log.e(TAG, "onDownloadComplete: failed with status " + status );
         }
     }
