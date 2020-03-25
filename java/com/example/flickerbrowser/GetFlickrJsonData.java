@@ -19,24 +19,25 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
         void onDataAvailable(List<Photo> data, DownloadStatus status);
     }
 
-    public GetFlickrJsonData(OnDataAvailable callBack, String baseUrl, String language, boolean matchAll) {
-        mBaseURL = baseUrl;
+    public GetFlickrJsonData(OnDataAvailable callBack, String baseURL, String language, boolean matchAll) {
+        Log.d(TAG, "GetFlickrJsonData called");
+        mBaseURL = baseURL;
+        mCallBack = callBack;
         mLanguage = language;
         mMatchAll = matchAll;
-        mCallBack = callBack;
     }
 
     void executeOnSameThread(String searchCriteria) {
-        Log.d(TAG, "executeOnSameThread: starts");
+        Log.d(TAG, "executeOnSameThread starts");
         String destinationUri = createUri(searchCriteria, mLanguage, mMatchAll);
 
         GetRawData getRawData = new GetRawData(this);
         getRawData.execute(destinationUri);
-        Log.d(TAG, "executeOnSameThread: ends");
+        Log.d(TAG, "executeOnSameThread ends");
     }
 
     private String createUri(String searchCriteria, String lang, boolean matchAll) {
-        Log.d(TAG, "createUri: starts");
+        Log.d(TAG, "createUri starts");
 
         return Uri.parse(mBaseURL).buildUpon()
                 .appendQueryParameter("tags", searchCriteria)
@@ -45,6 +46,5 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
                 .appendQueryParameter("format", "json")
                 .appendQueryParameter("nojsoncallback", "1")
                 .build().toString();
-
     }
 }

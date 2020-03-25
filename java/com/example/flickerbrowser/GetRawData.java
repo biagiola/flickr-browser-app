@@ -65,7 +65,7 @@ class GetRawData  extends AsyncTask<String, Void, String> {
                 result.append(line).append("\n");
             }
 
-            mDownloadStatus = mDownloadStatus.OK;
+            mDownloadStatus = DownloadStatus.OK;
             return result.toString();
 
         } catch (MalformedURLException e) {
@@ -87,7 +87,7 @@ class GetRawData  extends AsyncTask<String, Void, String> {
             }
         }
 
-        mDownloadStatus = mDownloadStatus.FAILED_OR_EMPTY;
+        mDownloadStatus = DownloadStatus.FAILED_OR_EMPTY;
 
         return null;
     }
