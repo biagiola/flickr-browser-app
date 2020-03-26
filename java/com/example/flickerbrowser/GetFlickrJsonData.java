@@ -1,6 +1,7 @@
 package com.example.flickerbrowser;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -10,7 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
+class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements GetRawData.OnDownloadComplete {
     private static final String TAG = "GetFlickrJsonData";
 
     private List<Photo> mPhotoList = null;
@@ -39,6 +40,21 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
         GetRawData getRawData = new GetRawData(this);
         getRawData.execute(destinationUri);
         Log.d(TAG, "executeOnSameThread ends");
+    }
+
+    @Override
+    protected void onPostExecute(List<Photo> photos) {
+        super.onPostExecute(photos);
+    }
+
+    @Override
+    protected List<Photo> doInBackground(String... params) {
+        Log.d(TAG, "doInBackground starts");
+        String destinationUri = createUri(params[0], mLanguage, mMatchAll);
+
+        GetRawData getRawData = new GetRawData(this);
+        getRawData.runInSameThread(destinationUri);
+        return mPhotoList;
     }
 
     private String createUri(String searchCriteria, String lang, boolean matchAll) {
@@ -80,7 +96,7 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
                     Photo photoObject = new Photo(title, author, authorId, link, tags, photoUrl);
                     mPhotoList.add(photoObject);
 
-                    Log.d(TAG, "onDownloadComplete: " + photoObject.toString());
+                    Log.d(TAG, "onDownloadComplete " + photoObject.toString());
                 }
             } catch(JSONException jsone) {
                 jsone.printStackTrace();
@@ -95,7 +111,6 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
             mCallBack.onDataAvailable(mPhotoList, status);
         }
 
-        Log.d(TAG, "onDownloadComplete: ends");
-
+        Log.d(TAG, "onDownloadComplete ends");
     }
 }
