@@ -44,7 +44,13 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements 
 
     @Override
     protected void onPostExecute(List<Photo> photos) {
-        super.onPostExecute(photos);
+        Log.d(TAG, "onPostExecute: starts");
+        
+        if(mCallBack != null) {
+            mCallBack.onDataAvailable(mPhotoList, DownloadStatus.OK);
+        }
+
+        Log.d(TAG, "onPostExecute: ends");
     }
 
     @Override
