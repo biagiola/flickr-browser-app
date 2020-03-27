@@ -30,7 +30,12 @@ class GetRawData  extends AsyncTask<String, Void, String> {
     void runInSameThread(String s) {
         Log.d(TAG, "runInSameThread: starts");
 
-        onPostExecute(doInBackground(s));
+//        onPostExecute(doInBackground(s));
+        if(mCallback != null) {
+//            String result = doInBackground(s);
+//            mCallback.onDownloadComplete(result, mDownloadStatus);
+            mCallback.onDownloadComplete(doInBackground(s), mDownloadStatus);
+        }
 
         Log.d(TAG, "runInSameThread: ends");
     }
@@ -53,7 +58,7 @@ class GetRawData  extends AsyncTask<String, Void, String> {
             mDownloadStatus = DownloadStatus.NOT_INITIALISED;
             return null;
         }
-        
+
         try {
             mDownloadStatus = DownloadStatus.PROCESSING;
             URL url = new URL(strings[0]);
@@ -65,6 +70,7 @@ class GetRawData  extends AsyncTask<String, Void, String> {
             Log.d(TAG, "doInBackground: The response code was " + response);
 
             StringBuilder result = new StringBuilder();
+
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
 //            String line;
@@ -76,12 +82,13 @@ class GetRawData  extends AsyncTask<String, Void, String> {
             mDownloadStatus = DownloadStatus.OK;
             return result.toString();
 
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "doInBackground: " + e.getMessage());
-        } catch (IOException e) {
-            Log.e(TAG, "doInBackground: IO Exception reading data: " + e.getMessage());
-        } catch (SecurityException e) {
-            Log.e(TAG, "doInBackground: Security Exception. Needs permission?" + e.getMessage());
+
+        } catch(MalformedURLException e) {
+            Log.e(TAG, "doInBackground: Invalid URL " + e.getMessage() );
+        } catch(IOException e) {
+            Log.e(TAG, "doInBackground: IO Exception reading data: " + e.getMessage() );
+        } catch(SecurityException e) {
+            Log.e(TAG, "doInBackground: Security Exception. Needs permission? " + e.getMessage());
         } finally {
             if(connection != null) {
                 connection.disconnect();
@@ -89,7 +96,7 @@ class GetRawData  extends AsyncTask<String, Void, String> {
             if(reader != null) {
                 try {
                     reader.close();
-                } catch (IOException e) {
+                } catch(IOException e) {
                     Log.e(TAG, "doInBackground: Error closing stream " + e.getMessage() );
                 }
             }
