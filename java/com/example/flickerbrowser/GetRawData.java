@@ -54,6 +54,8 @@ class GetRawData  extends AsyncTask<String, Void, String> {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
 
+        //Log.d(TAG, "doInBackground: String... strings" + strings);
+
         if(strings == null) {
             mDownloadStatus = DownloadStatus.NOT_INITIALISED;
             return null;
